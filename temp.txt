@@ -9,3 +9,4 @@ Added HomeController - 2026-02-25 14:10:00
 Created AccountController - 2026-02-26 18:16:00
 Added login functionality - 2026-02-26 14:34:00
 Created register page - 2026-02-27 17:10:00
+Added session handling - 2026-02-28 14:43:00
