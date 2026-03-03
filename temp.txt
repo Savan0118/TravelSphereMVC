@@ -13,3 +13,4 @@ Added session handling - 2026-02-28 14:43:00
 Added authentication middleware - 2026-03-01 11:49:00
 Created admin dashboard - 2026-03-01 18:34:00
 Added package CRUD functionality - 2026-03-02 19:21:00
+Added booking management - 2026-03-03 11:43:00
