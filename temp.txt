@@ -41,3 +41,4 @@ Created ApplicationDbContext - 2026-03-14 15:14:00
 Added database connection setup - 2026-03-15 12:28:00
 Created traveller model - 2026-03-16 15:57:00
 Added package model - 2026-03-17 18:11:00
+Created booking model - 2026-03-18 16:05:00
