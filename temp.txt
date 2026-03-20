@@ -47,3 +47,4 @@ Created AccountController - 2026-03-18 10:59:00
 Added login functionality - 2026-03-19 18:44:00
 Created register page - 2026-03-19 20:03:00
 Added session handling - 2026-03-19 17:12:00
+Added authentication middleware - 2026-03-20 12:53:00
