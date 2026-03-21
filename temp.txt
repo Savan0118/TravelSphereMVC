@@ -54,3 +54,4 @@ Added booking management - 2026-03-21 16:14:00
 Created profile management module - 2026-03-21 13:09:00
 Added traveller dashboard - 2026-03-21 18:14:00
 Implemented budget planner - 2026-03-21 17:07:00
+Added responsive navbar - 2026-03-21 12:39:00
