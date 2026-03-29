@@ -64,3 +64,4 @@ Created package details page - 2026-03-26 16:31:00
 Added admin statistics cards - 2026-03-26 20:54:00
 Improved package card design - 2026-03-27 15:24:00
 Added Bootstrap styling - 2026-03-28 11:36:00
+Fixed booking issue - 2026-03-29 12:56:00
