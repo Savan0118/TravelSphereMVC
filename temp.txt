@@ -77,3 +77,4 @@ Added application configuration settings - 2026-04-03 13:15:00
 Created ApplicationDbContext - 2026-04-03 12:38:00
 Added database connection setup - 2026-04-03 20:51:00
 Created traveller model - 2026-04-03 17:56:00
+Added package model - 2026-04-03 16:47:00
