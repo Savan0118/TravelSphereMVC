@@ -79,3 +79,4 @@ Added database connection setup - 2026-04-03 20:51:00
 Created traveller model - 2026-04-03 17:56:00
 Added package model - 2026-04-03 16:47:00
 Created booking model - 2026-04-03 16:57:00
+Added HomeController - 2026-04-03 15:51:00
