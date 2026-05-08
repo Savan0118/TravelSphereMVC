@@ -1,0 +1,108 @@
+@using System.Security.Claims
+@inject TravelSphereMVC.Models.ApplicationDbContext DbContext
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Admin Dashboard";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var profileImg = DbContext.Users.Find(userId)?.ProfileImageUrl ?? "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png";
+    var recentBookings = ViewBag.RecentBookings as IEnumerable<TravelSphereMVC.Models.Booking> ?? Enumerable.Empty<TravelSphereMVC.Models.Booking>();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminDashboard.css" />
+}
+
+<!-- BANNER -->
+<div class="banner">
+    <div class="banner-text">
+        <h1>Admin Control Panel</h1>
+        <p>Manage the TravelSphere platform, packages, and bookings efficiently.</p>
+    </div>
+    <img src="@profileImg" class="profile" onclick="location.href='@Url.Action("Profile", "Admin")'"
+         style="cursor: pointer; background: white; border-radius: 50%; width: 50px; height: 50px; object-fit: cover; border: none; padding: 2px;" />
+</div>
+
+<!-- CONTENT -->
+<div class="content-area">
+
+    <!-- STATS -->
+    <div class="admin-stats">
+        <div class="stat-card">
+            <p>My Packages</p>
+            <h2>@(ViewBag.TotalPackages ?? 0)</h2>
+        </div>
+        <div class="stat-card">
+            <p>My Destinations</p>
+            <h2>@(ViewBag.TotalDestinations ?? 0)</h2>
+        </div>
+        <div class="stat-card">
+            <p>Total Revenue</p>
+            <h2>₹ @(ViewBag.TotalRevenue ?? 0)</h2>
+        </div>
+    </div>
+
+    <!-- BOOKINGS + ACTION -->
+    <div class="admin-layout">
+
+        <!-- TABLE -->
+        <div class="booking-table">
+            <h2>Recent Bookings</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Traveller</th>
+                        <th>Package</th>
+                        <th>Persons</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (recentBookings.Any())
+                    {
+                        foreach (var b in recentBookings)
+                        {
+                            <tr>
+                                <td>@(b.User?.Name ?? b.UserId)</td>
+                                <td>@(b.Package?.Name ?? "—")</td>
+                                <td>@(b.Travellers?.Count ?? 0)</td>
+                                <td>₹ @b.TotalAmount.ToString("N2")</td>
+                                <td>
+                                    @if (b.Status == "Confirmed")
+                                    {
+                                        <span style="color: green; font-weight: 600;">Confirmed</span>
+                                    }
+                                    else if (b.Status == "Pending")
+                                    {
+                                        <span style="color: orange; font-weight: 600;">Pending</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: red; font-weight: 600;">@b.Status</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 20px; color: #888;">
+                                No bookings yet. Add packages to get started.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="admin-actions">
+            <button onclick="location.href='@Url.Action("AddPackage", "Admin")'">Add Package</button>
+            <button onclick="location.href='@Url.Action("Packages", "Admin")'">View Packages</button>
+            <button onclick="location.href='@Url.Action("Bookings", "Admin")'">View all Bookings</button>
+        </div>
+
+    </div>
+
+</div>

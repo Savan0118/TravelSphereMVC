@@ -1,0 +1,81 @@
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+.profile-upload {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #198754;
+    transition: opacity 0.3s;
+}
+
+.profile-upload:hover .profile-avatar {
+    opacity: 0.8;
+}
+
+.profile-header h2 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+}
+
+.profile-header p {
+    margin: 0 0 5px 0;
+    color: #666;
+    font-size: 15px;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.profile-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.profile-card h3 {
+    margin: 0 0 20px 0;
+    color: #1a1a1a;
+    border-bottom: 2px solid #e4e6e4;
+    padding-bottom: 10px;
+}
+
+.profile-card p {
+    margin: 0 0 12px 0;
+    color: #444;
+    font-size: 15px;
+}
+
+.edit-btn {
+    background: #198754;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.edit-btn:hover {
+    background: #146c43;
+}

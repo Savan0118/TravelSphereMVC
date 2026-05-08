@@ -1,0 +1,149 @@
+/* -------------------- BANNER -------------------- */
+
+.budget-banner {
+  background-image: url("/Images/Home_Img.png");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 160px;
+}
+
+.budget-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0.4), transparent);
+}
+
+.banner-text {
+  position: relative;
+  z-index: 2;
+  color: white;
+}
+
+
+/* -------------------- CARD -------------------- */
+
+.budget-card {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+.budget-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+}
+
+
+/* -------------------- GRID -------------------- */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px 25px; /* ↓ reduced gap */
+}
+
+
+/* -------------------- LABELS -------------------- */
+
+.grid-2 label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2f2f2f;
+  margin-bottom: 6px;
+}
+
+
+/* -------------------- INPUTS -------------------- */
+
+.grid-2 input,
+.grid-2 select {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: white;
+  font-size: 14px;
+}
+
+/* focus */
+
+.grid-2 input:focus,
+.grid-2 select:focus {
+  border-color: #2a8153;
+  box-shadow: 0 0 0 2px rgba(42,129,83,0.15);
+}
+
+/* -------------------- INPUT HOVER -------------------- */
+
+.grid-2 input:hover,
+.grid-2 select:hover {
+  border-color: #b8d9c8;
+}
+
+
+/* -------------------- BUTTON -------------------- */
+
+.generate-btn {
+  margin-top: 40px;
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #2a8153, #1a4f36);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 12px 25px rgba(42,129,83,0.3);
+}
+
+.generate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 35px rgba(0,0,0,0.2);
+}
+
+
+/* -------------------- SECTION GROUPING -------------------- */
+
+.grid-2 > div {
+  display: flex;
+  flex-direction: column;
+  background: #f7f9f8;
+  padding: 15px;
+  border-radius: 12px;
+  transition: 0.2s;
+}
+
+.grid-2 > div:hover {
+  background: #eef6f1;
+}
+
+
+/* -------------------- SMALL UI DETAILS -------------------- */
+
+.grid-2 select {
+  cursor: pointer;
+}
+
+.grid-2 input::placeholder {
+  color: #aaa;
+}
+
+
+/* -------------------- RESPONSIVE -------------------- */
+
+@media (max-width: 900px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .budget-card {
+    padding: 25px;
+  }
+}

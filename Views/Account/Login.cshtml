@@ -1,0 +1,85 @@
+@model TravelSphereMVC.Models.LoginViewModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Login";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Login.css" />
+}
+
+<div class="login-container">
+    <div class="login-box">
+        <h2 class="title">Welcome to TravelSphere</h2>
+
+        @if (ViewBag.Error != null)
+        {
+            <div style="color: red; text-align: center; margin-bottom: 10px;">@ViewBag.Error</div>
+        }
+        
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div style="color: green; text-align: center; margin-bottom: 10px; font-weight: bold;">
+                @TempData["SuccessMessage"]
+            </div>
+            <script>
+                // Pop-up alert for successful registration
+                window.onload = function() {
+                    alert('@TempData["SuccessMessage"]');
+                };
+            </script>
+        }
+
+        <form asp-action="Login" method="post">
+            <div class="segmented-container">
+                <label class="segmented-label">Login As:</label>
+                <div class="segmented-control">
+                    <input type="hidden" name="role" id="roleInput" value="Traveller" />
+                    <button type="button" class="segment" id="btnAdmin" onclick="setRole('Admin', this)">Admin</button>
+                    <button type="button" class="segment active" id="btnTraveller" onclick="setRole('Traveller', this)">Traveller</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Enter Email:</label>
+                <input type="text" asp-for="Email" placeholder="Enter your email" />
+                <span asp-validation-for="Email" style="color:red; font-size:0.9em;"></span>
+            </div>
+
+            <div class="input-group">
+                <label>Password:</label>
+                <input type="password" asp-for="PasswordHash" placeholder="Enter your password" />
+                <span asp-validation-for="PasswordHash" style="color:red; font-size:0.9em;"></span>
+            </div>
+
+            <div class="forgot" onclick="location.href='@Url.Action("ForgotPassword", "Account")'">Forgot Password?</div>
+
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+
+        <form asp-action="GoogleLogin" method="post" style="margin-top: 15px;">
+            <button type="submit" class="login-btn" style="background-color: white; color: black; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 500;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google logo" style="width:20px; height:20px;" />
+                Sign in with Google
+            </button>
+        </form>
+
+        <div class="register" style="margin-top: 20px;">
+            Don’t have an account ?
+            <span onclick="location.href='@Url.Action("Register", "Account")'" style="cursor: pointer; text-decoration: underline;">
+                Register
+            </span>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function setRole(role, btn) {
+            document.getElementById('roleInput').value = role;
+            document.querySelectorAll('.segment').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    </script>
+}

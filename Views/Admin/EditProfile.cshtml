@@ -1,0 +1,46 @@
+@model TravelSphereMVC.Models.User
+@using System.Security.Claims
+@inject TravelSphereMVC.Models.ApplicationDbContext DbContext
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit Admin Profile";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var profileImg = DbContext.Users.Find(userId)?.ProfileImageUrl ?? "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/EditProfile.css" />
+}
+
+<!-- BANNER -->
+<div class="banner">
+    <div class="banner-text">
+        <h1>Edit Profile</h1>
+        <p>Update your administrator profile details</p>
+    </div>
+    <img src="@profileImg" class="profile" onclick="location.href='@Url.Action("Profile", "Admin")'" style="cursor: pointer; background: white; border-radius: 50%; width: 50px; height: 50px; object-fit: cover; border: none; padding: 2px;" />
+</div>
+
+<div class="content-area">
+    <div class="edit-card">
+        <form asp-action="EditProfile" asp-controller="Admin" method="post">
+            <div class="form-row">
+                <label>Name :</label>
+                <input name="Name" value="@Model?.Name" required />
+            </div>
+            <div class="form-row">
+                <label>Email :</label>
+                <input name="Email" type="email" value="@Model?.Email" required />
+            </div>
+            <div class="form-row">
+                <label>Profile Image URL :</label>
+                <input name="ProfileImageUrl" type="text" value="@Model?.ProfileImageUrl" placeholder="Optional URL" />
+            </div>
+            <div class="form-row">
+                <label>Role :</label>
+                <input name="Role" value="@Model?.Role" readonly style="background: #eee;" />
+            </div>
+            <button type="submit" class="save-btn">Save</button>
+        </form>
+    </div>
+</div>

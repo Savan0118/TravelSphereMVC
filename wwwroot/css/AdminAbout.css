@@ -1,0 +1,25 @@
+/* GRID */
+.about-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+/* CARDS */
+.about-card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.about-card.full {
+  grid-column: span 2;
+}
+
+.contact {
+  border: 2px solid #198754;
+}
+
+.mt {
+  margin-top: 15px;
+}

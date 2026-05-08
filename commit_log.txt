@@ -1,0 +1,2 @@
+2026-02-20 12:28:00 - Created wishlist feature
+2026-02-20 12:49:00 - Improved dashboard styling

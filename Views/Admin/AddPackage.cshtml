@@ -1,0 +1,362 @@
+@using System.Security.Claims
+@inject TravelSphereMVC.Models.ApplicationDbContext DbContext
+@model TravelSphereMVC.Models.Package
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Add New Package";
+    var userId     = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var profileImg = DbContext.Users.Find(userId)?.ProfileImageUrl
+                     ?? "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddPackage.css" />
+}
+
+<!-- BANNER -->
+<div class="banner">
+    <div class="banner-text">
+        <h1>Add New Package</h1>
+        <p>Create a rich, detailed travel experience for your customers</p>
+    </div>
+    <img src="@profileImg" class="profile"
+         onclick="location.href='@Url.Action("Profile", "Admin")'"
+         style="cursor:pointer; background:white; border-radius:50%; width:50px; height:50px; object-fit:cover; border:none; padding:2px;" />
+</div>
+
+<div class="content-area">
+    <form asp-action="AddPackage" method="post">
+
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 1 — BASIC DETAILS                                  -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <div class="pkg-section">
+            <div class="section-header">
+                <i class="fa-solid fa-tag"></i>
+                <h3>Basic Details</h3>
+            </div>
+            <div class="section-body">
+
+                <div class="field-full">
+                    <label>Package Name <span class="req">*</span></label>
+                    <input type="text" asp-for="Name" placeholder="e.g. Leh Ladakh Adventure Tour" required />
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label>Location <span class="req">*</span></label>
+                        <input type="text" asp-for="Location" placeholder="e.g. Leh, Ladakh" required />
+                    </div>
+                    <div class="field">
+                        <label>Country</label>
+                        <input type="text" asp-for="Country" placeholder="e.g. India" />
+                    </div>
+                    <div class="field">
+                        <label>State</label>
+                        <input type="text" asp-for="State" placeholder="e.g. Jammu & Kashmir" />
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label>Destination Type</label>
+                        <select asp-for="DestinationType">
+                            <option value="">— Select Type —</option>
+                            <option>Beach</option>
+                            <option>Mountain</option>
+                            <option>Heritage</option>
+                            <option>Adventure</option>
+                            <option>Wildlife</option>
+                            <option>City</option>
+                            <option>Pilgrimage</option>
+                            <option>Backwater</option>
+                            <option>Desert</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Travel Type</label>
+                        <select asp-for="TravelType">
+                            <option value="">— Select —</option>
+                            <option>Solo</option>
+                            <option>Family</option>
+                            <option>Group</option>
+                            <option>Honeymoon</option>
+                            <option>Corporate</option>
+                            <option>Friends</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Difficulty Level</label>
+                        <select asp-for="DifficultyLevel">
+                            <option value="">— Select —</option>
+                            <option>Easy</option>
+                            <option>Moderate</option>
+                            <option>Challenging</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field-full">
+                    <label>Short Description</label>
+                    <input type="text" asp-for="ShortDescription"
+                           placeholder="One-line summary shown on cards (max 120 chars)" maxlength="150" />
+                </div>
+
+                <div class="field-full">
+                    <label>Full Description</label>
+                    <textarea asp-for="FullDescription" rows="4"
+                              placeholder="Detailed description of this package — highlights, unique selling points, overview…"></textarea>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 2 — TRAVEL DETAILS                                 -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <div class="pkg-section">
+            <div class="section-header">
+                <i class="fa-solid fa-route"></i>
+                <h3>Travel Details</h3>
+            </div>
+            <div class="section-body">
+
+                <div class="field-row">
+                    <div class="field">
+                        <label>Duration <span class="req">*</span></label>
+                        <input type="text" asp-for="Duration" placeholder="e.g. 6 Days / 5 Nights" required />
+                    </div>
+                    <div class="field">
+                        <label>Best Season</label>
+                        <input type="text" asp-for="BestSeason" placeholder="e.g. Oct – Mar" />
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label>Pickup Point</label>
+                        <input type="text" asp-for="PickupPoint" placeholder="e.g. Delhi Airport, T3" />
+                    </div>
+                    <div class="field">
+                        <label>Drop Point</label>
+                        <input type="text" asp-for="DropPoint" placeholder="e.g. Same as pickup" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 3 — HOTEL & FOOD                                   -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <div class="pkg-section">
+            <div class="section-header">
+                <i class="fa-solid fa-hotel"></i>
+                <h3>Hotel &amp; Food</h3>
+            </div>
+            <div class="section-body">
+
+                <div class="field-row">
+                    <div class="field">
+                        <label>Hotel Name</label>
+                        <input type="text" asp-for="HotelName" placeholder="e.g. The Grand Himalaya Resort" />
+                    </div>
+                    <div class="field field-sm">
+                        <label>Hotel Rating ⭐</label>
+                        <select asp-for="HotelRating">
+                            <option value="">—</option>
+                            <option value="5">5 Star</option>
+                            <option value="4">4 Star</option>
+                            <option value="3">3 Star</option>
+                            <option value="2">2 Star</option>
+                            <option value="1">1 Star</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label>Room Type</label>
+                        <select asp-for="RoomType">
+                            <option value="">— Select —</option>
+                            <option>Standard</option>
+                            <option>Deluxe</option>
+                            <option>Suite</option>
+                            <option>Dormitory</option>
+                            <option>Tent / Camp</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Meals Included</label>
+                        <select asp-for="MealsIncluded">
+                            <option value="">— Select —</option>
+                            <option>None</option>
+                            <option>Breakfast Only</option>
+                            <option>Breakfast &amp; Dinner</option>
+                            <option>All Meals</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 4 — PRICING                                        -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <div class="pkg-section">
+            <div class="section-header">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+                <h3>Pricing</h3>
+            </div>
+            <div class="section-body">
+
+                <div class="field-row">
+                    <div class="field">
+                        <label>Price per Person (₹) <span class="req">*</span></label>
+                        <input type="number" step="0.01" asp-for="Price" placeholder="e.g. 45000" required min="0" />
+                    </div>
+                    <div class="field field-sm">
+                        <label>Discount %</label>
+                        <input type="number" step="0.01" asp-for="DiscountPercentage"
+                               placeholder="e.g. 10" min="0" max="100" />
+                    </div>
+                    <div class="field field-sm">
+                        <label>Total Seats</label>
+                        <input type="number" asp-for="TotalSeats" value="15" min="1" max="500" required />
+                    </div>
+                </div>
+
+                <div class="price-preview" id="pricePreview" style="display:none;">
+                    <i class="fa-solid fa-circle-check"></i>
+                    Effective price: ₹<strong id="effectivePrice">—</strong> per person after discount
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 5 — MEDIA                                          -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <div class="pkg-section">
+            <div class="section-header">
+                <i class="fa-solid fa-images"></i>
+                <h3>Media</h3>
+            </div>
+            <div class="section-body">
+
+                <div class="field-full">
+                    <label>Main Package Image URL</label>
+                    <input type="text" asp-for="ImageUrl"
+                           placeholder="https://images.unsplash.com/… or /Images/mypackage.jpg"
+                           id="mainImageUrl" oninput="previewImage(this.value)" />
+                </div>
+
+                <div id="imagePreviewBox" style="display:none; margin-top:10px;">
+                    <img id="imagePreview" src="" alt="Preview"
+                         style="max-height:180px; border-radius:10px; object-fit:cover; border:2px solid #e0e0e0;" />
+                </div>
+
+                <div class="field-full" style="margin-top:16px;">
+                    <label>Gallery Images (Comma-separated URLs)</label>
+                    <textarea asp-for="GalleryImages" rows="3"
+                              placeholder="https://img1.jpg, https://img2.jpg, https://img3.jpg"></textarea>
+                    <span class="hint">Separate each URL with a comma. These appear in the package detail gallery.</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 6 — ITINERARY                                      -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <div class="pkg-section">
+            <div class="section-header">
+                <i class="fa-solid fa-map"></i>
+                <h3>Day-Wise Itinerary</h3>
+            </div>
+            <div class="section-body">
+                <div class="field-full">
+                    <label>Itinerary</label>
+                    <textarea asp-for="Itinerary" rows="7"
+                              placeholder="Day 1: Arrive in Leh. Transfer to hotel. Acclimatization rest.&#10;Day 2: Visit Pangong Lake. Overnight stay.&#10;Day 3: …"></textarea>
+                    <span class="hint">Write day-wise plan. Use a new line per day for readability.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <!-- SECTION 7 — ACTIVITIES & ATTRACTIONS                       -->
+        <!-- ══════════════════════════════════════════════════════════ -->
+        <div class="pkg-section">
+            <div class="section-header">
+                <i class="fa-solid fa-person-hiking"></i>
+                <h3>Activities &amp; Attractions</h3>
+            </div>
+            <div class="section-body">
+
+                <div class="field-full">
+                    <label>Activities Included (comma-separated)</label>
+                    <input type="text" asp-for="ActivitiesList"
+                           placeholder="Trekking, River Rafting, Camping, Sightseeing, Photography" />
+                </div>
+
+                <div class="field-full">
+                    <label>Special Attractions</label>
+                    <textarea asp-for="SpecialAttractions" rows="3"
+                              placeholder="Sunrise at Pangong Lake, Stargazing at Diskit, Monastery visits…"></textarea>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── Save / Cancel ──────────────────────────────────────── -->
+        <div class="form-actions">
+            <button type="submit" class="btn-save">
+                <i class="fa-solid fa-floppy-disk"></i> Save Package
+            </button>
+            <button type="button" class="btn-cancel"
+                    onclick="location.href='@Url.Action("Packages", "Admin")'">
+                <i class="fa-solid fa-arrow-left"></i> Cancel
+            </button>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+<script>
+    // Live discount calculator
+    const priceInput    = document.querySelector('[name="Price"]');
+    const discountInput = document.querySelector('[name="DiscountPercentage"]');
+    const preview       = document.getElementById('pricePreview');
+    const effectiveEl   = document.getElementById('effectivePrice');
+
+    function calcEffectivePrice() {
+        const price    = parseFloat(priceInput.value)    || 0;
+        const discount = parseFloat(discountInput.value) || 0;
+        if (price > 0 && discount > 0) {
+            const eff = price - (price * discount / 100);
+            effectiveEl.textContent = eff.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            preview.style.display = 'flex';
+        } else {
+            preview.style.display = 'none';
+        }
+    }
+
+    priceInput?.addEventListener('input', calcEffectivePrice);
+    discountInput?.addEventListener('input', calcEffectivePrice);
+
+    // Image URL live preview
+    function previewImage(url) {
+        const box = document.getElementById('imagePreviewBox');
+        const img = document.getElementById('imagePreview');
+        if (url.trim()) {
+            img.src = url.trim();
+            box.style.display = 'block';
+        } else {
+            box.style.display = 'none';
+        }
+    }
+</script>
+}

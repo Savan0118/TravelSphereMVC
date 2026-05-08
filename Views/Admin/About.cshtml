@@ -1,0 +1,59 @@
+@using System.Security.Claims
+@inject TravelSphereMVC.Models.ApplicationDbContext DbContext
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "About TravelSphere";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var profileImg = DbContext.Users.Find(userId)?.ProfileImageUrl ?? "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminAbout.css" />
+}
+
+<!-- BANNER -->
+<div class="banner">
+    <div class="banner-text">
+        <h1>About TravelSphere</h1>
+        <p>Learn more about our platform and mission</p>
+    </div>
+    <img src="@profileImg" class="profile" onclick="location.href='@Url.Action("Profile", "Admin")'" style="cursor: pointer; background: white; border-radius: 50%; width: 50px; height: 50px; object-fit: cover; border: none; padding: 2px;" />
+</div>
+
+<div class="content-area">
+    <div class="about-grid">
+        <!-- STORY -->
+        <div class="about-card full">
+            <p>
+                <strong>TravelSphere</strong> was created with a simple idea —
+                travel should feel exciting, not overwhelming. We believe planning
+                a trip should be as enjoyable as the journey itself. From discovering
+                beautiful destinations to organizing stays and bookings, our platform
+                brings everything together in one place.
+            </p>
+        </div>
+
+        <!-- PRIVACY -->
+        <div class="about-card">
+            <h3>Privacy Policy</h3>
+            <p>
+                TravelSphere collects basic information such as your name, email,
+                phone number and booking details to manage travel requests and
+                improve experience. Your data is used only for account and booking
+                purposes.
+            </p>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="about-card contact">
+            <h3>Contact</h3>
+            <p>📧 support@travelsphere.com</p>
+            <p>📞 +91 98765 43210</p>
+            <p>📍 Ahmedabad, India</p>
+
+            <h3 class="mt">Quick Links</h3>
+            <p>Privacy Policy</p>
+            <p>Terms &amp; Conditions</p>
+        </div>
+    </div>
+</div>

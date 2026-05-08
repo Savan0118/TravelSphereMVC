@@ -1,0 +1,53 @@
+@model TravelSphereMVC.Models.User
+@using System.Security.Claims
+@inject TravelSphereMVC.Models.ApplicationDbContext DbContext
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Admin Profile";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var profileImg = DbContext.Users.Find(userId)?.ProfileImageUrl ?? "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminProfile.css" />
+}
+
+<!-- BANNER -->
+<div class="banner">
+    <div class="banner-text">
+        <h1>Administrator Profile</h1>
+        <p>Manage your account settings and preferences</p>
+    </div>
+    <img src="@profileImg" class="profile" onclick="location.href='@Url.Action("Profile", "Admin")'" style="cursor: pointer; background: white; border-radius: 50%; width: 50px; height: 50px; object-fit: cover; border: none; padding: 2px;" />
+</div>
+
+<div class="content-area">
+    <div class="profile-header">
+        <label class="profile-upload">
+            <img src="@profileImg" class="profile-avatar" alt="admin profile" />
+            <input type="file" accept="image/*" hidden />
+        </label>
+        <div>
+            <h2>@Model?.Name</h2>
+            <p>@Model?.Email</p>
+            <p>System Administrator</p>
+        </div>
+    </div>
+
+    <div class="profile-grid">
+        <div class="profile-card">
+            <h3>Administrator Details</h3>
+            <p>Name: @Model?.Name</p>
+            <p>Email: @Model?.Email</p>
+            <p>Role: @Model?.Role</p>
+        </div>
+
+        <div class="profile-card">
+            <h3>System Stats</h3>
+            <p>Managed Packages: @ViewBag.PackageCount</p>
+            <p>Total Bookings Processed: @ViewBag.BookingCount</p>
+        </div>
+    </div>
+
+    <button class="edit-btn" onclick="location.href='@Url.Action("EditProfile", "Admin")'">Edit Profile</button>
+</div>

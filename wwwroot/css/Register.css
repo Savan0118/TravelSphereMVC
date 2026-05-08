@@ -1,0 +1,278 @@
+html, body {
+
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+
+}
+
+
+
+/* BACKGROUND */
+
+.register-container {
+
+  height: 100vh;
+  width: 100vw;
+
+  background-image: url("/Images/Login_Img.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+
+/* GLASS CARD */
+
+.register-box {
+
+  width: 420px;
+
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 45px;
+  padding-right: 45px;
+
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.06);
+
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(25px);
+
+  border: 1px solid rgba(255,255,255,0.3);
+
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+
+}
+
+
+
+/* TITLE */
+
+.title {
+
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+
+}
+
+
+
+/* REGISTER AS */
+
+.segmented-container {
+
+  margin-bottom: 12px;
+
+}
+
+
+
+.segmented-label {
+
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+
+}
+
+
+
+.segmented-control {
+
+  display: inline-flex;
+  background: rgba(255,255,255,0.15);
+  border-radius: 25px;
+  padding: 4px;
+
+}
+
+
+
+.segment {
+
+  border: none;
+  padding: 6px 18px;
+  border-radius: 20px;
+  background: transparent;
+  cursor: pointer;
+
+}
+
+
+
+.segment.active {
+
+  background: white;
+
+}
+
+
+
+/* INPUT */
+
+.input-group {
+
+  margin-bottom: 10px;
+
+}
+
+
+
+.input-group label {
+
+  display: block;
+  margin-bottom: 3px;
+
+}
+
+
+
+.input-group input {
+
+  width: 100%;
+  padding: 10px;
+  border-radius: 25px;
+  border: 1px solid rgba(255,255,255,0.4);
+  outline: none;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+
+}
+
+
+
+/* REGISTER BUTTON */
+
+.register-btn {
+
+  width: 100%;
+  padding: 11px;
+  margin-top: 8px;
+
+  background: rgba(46, 125, 91, 0.9);
+
+  color: white;
+
+  border: none;
+  border-radius: 25px;
+
+  font-size: 15px;
+  cursor: pointer;
+
+}
+
+
+.register-btn:hover {
+
+  background: rgba(46, 125, 91, 1);
+
+}
+
+
+
+/* SIGN IN LINK */
+
+.login-link {
+
+  text-align: center;
+  margin-top: 15px;
+
+}
+
+
+
+.login-link span {
+
+  margin-left: 8px;
+
+  font-weight: 700;
+
+  text-decoration: underline;
+
+  cursor: pointer;
+
+  color: black;
+
+}
+
+
+
+.login-link span:hover {
+
+  color: #2e7d5b;
+
+}
+
+
+
+/* POPUP */
+
+.popup {
+
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.35);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+
+.popup-box {
+
+  background: #2e7d5b;
+
+  padding: 25px 40px;
+
+  border-radius: 15px;
+
+  text-align: center;
+
+  color: white;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
+}
+
+
+
+.popup-box button {
+
+  padding: 8px 25px;
+
+  border: none;
+
+  border-radius: 20px;
+
+  background: white;
+
+  color: #2e7d5b;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+}
+
+/* This is Register.css */

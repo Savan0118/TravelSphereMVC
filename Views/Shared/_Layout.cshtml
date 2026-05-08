@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TravelSphere</title>
+    <link rel="stylesheet" href="~/css/App.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <div class="home">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-top">
+                <h2 class="logo">Travel<span>Sphere</span></h2>
+                <p class="tagline">Your gateway to unforgettable journeys</p>
+
+                @{
+                    // Mini profile + notification count
+                    using var scope = Context.RequestServices.CreateScope();
+                    var db = scope.ServiceProvider.GetRequiredService<TravelSphereMVC.Models.ApplicationDbContext>();
+                    var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "";
+                    var miniUser      = string.IsNullOrEmpty(currentUserId) ? null : db.Users.Find(currentUserId);
+                    var miniAvatar    = miniUser?.ProfileImageUrl
+                                        ?? $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(miniUser?.Name ?? "T")}&background=1a4f36&color=fff&size=60";
+                    var miniName      = miniUser?.Name ?? "Traveller";
+                    var unreadCount   = string.IsNullOrEmpty(currentUserId) ? 0
+                                        : db.Notifications.Count(n => n.UserId == currentUserId && !n.IsRead);
+                }
+
+                <!-- Mini Profile -->
+                <div style="display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.08); border-radius:12px; padding:10px 12px; margin-bottom:20px; cursor:pointer;"
+                     onclick="location.href='@Url.Action("Profile","Account")'">
+                    <img src="@miniAvatar"
+                         onerror="this.src='https://ui-avatars.com/api/?name=T&background=1a4f36&color=fff&size=60'"
+                         style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid rgba(103,216,164,0.5); flex-shrink:0;" />
+                    <div style="overflow:hidden; flex:1;">
+                        <div style="font-weight:700; font-size:13px; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">@miniName</div>
+                        <div style="font-size:10px; color:#a0c4b2; margin-top:1px;">Traveller Account</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="font-size:10px; color:rgba(255,255,255,0.4);"></i>
+                </div>
+
+                <ul class="menu">
+
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Home")">
+                            <i class="fa-solid fa-house"></i> Home
+                        </a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Packages" ? "active" : "")">
+                        <a href="@Url.Action("Packages", "Home")">
+                            <i class="fa-solid fa-compass"></i> Explore
+                        </a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Wishlist" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Wishlist")">
+                            <i class="fa-solid fa-heart"></i> Wishlist
+                        </a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() is "MyJourneys" or "TripDetails" ? "active" : "")">
+                        <a href="@Url.Action("MyJourneys", "Booking")">
+                            <i class="fa-solid fa-map-location-dot"></i> My Journeys
+                        </a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Notifications" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Notifications")">
+                            <i class="fa-solid fa-bell"></i> Notifications
+                            @if (unreadCount > 0)
+                            {
+                                <span style="background:#e74c3c; color:white; border-radius:50%; min-width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; font-size:11px; margin-left:auto; padding:0 6px; font-weight:700;">@unreadCount</span>
+                            }
+                        </a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "BudgetPlanner" ? "active" : "")">
+                        <a href="@Url.Action("BudgetPlanner", "Home")">
+                            <i class="fa-solid fa-wallet"></i> Budget Planner
+                        </a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "About" ? "active" : "")">
+                        <a href="@Url.Action("About", "Home")">
+                            <i class="fa-solid fa-circle-info"></i> About Us
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="logout-container">
+                <div class="logout" onclick="location.href='@Url.Action("Logout", "Account")'">
+                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main">
+            @RenderBody()
+        </div>
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

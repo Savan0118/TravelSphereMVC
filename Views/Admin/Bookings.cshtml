@@ -1,0 +1,172 @@
+@using System.Security.Claims
+@inject TravelSphereMVC.Models.ApplicationDbContext DbContext
+@model IEnumerable<TravelSphereMVC.Models.Booking>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Manage Bookings";
+    var userId     = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var profileImg = DbContext.Users.Find(userId)?.ProfileImageUrl
+                     ?? "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminBookings.css" />
+}
+
+<!-- BANNER -->
+<div class="banner">
+    <div class="banner-text">
+        <h1>Manage Bookings</h1>
+        <p>Review, confirm, and manage all customer journey requests</p>
+    </div>
+    <img src="@profileImg" class="profile"
+         onclick="location.href='@Url.Action("Profile", "Admin")'"
+         style="cursor:pointer; background:white; border-radius:50%; width:50px; height:50px; object-fit:cover; border:none; padding:2px;" />
+</div>
+
+<div class="content-area">
+    <div class="booking-container">
+
+        <!-- HEADER + SEARCH -->
+        <div class="booking-header">
+            <div>
+                <h2 style="margin:0; font-size:20px; font-weight:700;">All Bookings</h2>
+                <p style="margin:4px 0 0; font-size:13px; color:#666;">
+                    @Model.Count() total &nbsp;|&nbsp;
+                    @Model.Count(b => b.Status == "Pending") pending &nbsp;|&nbsp;
+                    @Model.Count(b => b.Status == "Confirmed") confirmed
+                </p>
+            </div>
+            <form method="get" asp-action="Bookings" style="display:flex; gap:8px;">
+                <input type="text" name="search" class="search"
+                       placeholder="Search by traveller, package, status…"
+                       value="@Context.Request.Query["search"]" />
+                <button type="submit" class="search-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Traveller</th>
+                        <th>Package</th>
+                        <th>Travellers</th>
+                        <th>Guest Breakdown</th>
+                        <th>Booking Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="9" style="text-align:center; padding:40px; color:#888;">
+                                <i class="fa-solid fa-calendar-xmark" style="font-size:32px; color:#ddd; display:block; margin-bottom:10px;"></i>
+                                No bookings found.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        int index = 1;
+                        foreach (var b in Model)
+                        {
+                            var adults   = b.Travellers.Count(t => t.Age >= 18);
+                            var children = b.Travellers.Count(t => t.Age > 0 && t.Age < 18);
+                            var total    = b.Travellers.Count;
+
+                            <tr>
+                                <td class="index-cell">@(index++)</td>
+
+                                <td>
+                                    <div class="traveller-cell">
+                                        <span class="traveller-name">@(b.User?.Name ?? "—")</span>
+                                        <span class="traveller-email">@(b.User?.Email ?? "")</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div style="font-weight:600;">@(b.Package?.Name ?? "—")</div>
+                                    <div style="font-size:12px; color:#888;">@(b.Package?.Location ?? "")</div>
+                                </td>
+
+                                <td style="text-align:center; font-weight:700;">@total</td>
+
+                                <td>
+                                    @if (total == 0)
+                                    {
+                                        <span style="color:#bbb; font-size:12px;">—</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="guest-pill adult-pill">@adults Adult@(adults != 1 ? "s" : "")</span>
+                                        @if (children > 0)
+                                        {
+                                            <span class="guest-pill child-pill">@children Child@(children != 1 ? "ren" : "")</span>
+                                        }
+                                    }
+                                </td>
+
+                                <td style="font-size:13px;">@b.Timestamp.ToString("dd MMM yyyy")</td>
+
+                                <td style="font-weight:700; color:#1a4f36;">₹ @b.TotalAmount.ToString("N0")</td>
+
+                                <td>
+                                    @if (b.Status == "Confirmed")
+                                    {
+                                        <span class="status-badge confirmed-badge">✓ Confirmed</span>
+                                    }
+                                    else if (b.Status == "Pending")
+                                    {
+                                        <span class="status-badge pending-badge">⏳ Pending</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge cancelled-badge">✕ Cancelled</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <div class="action-group">
+                                        @if (b.Status != "Confirmed" && b.Status != "Cancelled")
+                                        {
+                                            <form asp-action="UpdateBookingStatus" method="post" style="margin:0;">
+                                                <input type="hidden" name="id"     value="@b.Id" />
+                                                <input type="hidden" name="status" value="Confirmed" />
+                                                <button type="submit" class="action-btn confirm-btn" title="Confirm booking">
+                                                    <i class="fa-solid fa-check"></i> Confirm
+                                                </button>
+                                            </form>
+                                        }
+                                        @if (b.Status != "Cancelled")
+                                        {
+                                            <form asp-action="UpdateBookingStatus" method="post" style="margin:0;">
+                                                <input type="hidden" name="id"     value="@b.Id" />
+                                                <input type="hidden" name="status" value="Cancelled" />
+                                                <button type="submit" class="action-btn cancel-btn" title="Cancel booking"
+                                                        onclick="return confirm('Cancel this booking and notify the traveller?')">
+                                                    <i class="fa-solid fa-xmark"></i> Cancel
+                                                </button>
+                                            </form>
+                                        }
+                                        @if (b.Status == "Cancelled")
+                                        {
+                                            <span style="color:#bbb; font-size:12px;">No actions</span>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

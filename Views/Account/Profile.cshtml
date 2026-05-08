@@ -1,0 +1,87 @@
+@model TravelSphereMVC.Models.User
+@using System.Security.Claims
+@inject TravelSphereMVC.Models.ApplicationDbContext DbContext
+@{
+    ViewData["Title"] = "My Profile";
+    var userId       = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+    var bookingCount = DbContext.Bookings.Count(b => b.UserId == userId);
+    var wishCount    = DbContext.WishlistItems.Count(w => w.UserId == userId);
+    var reviewCount  = DbContext.Reviews.Count(r => r.UserId == userId);
+    var confirmedCount = DbContext.Bookings.Count(b => b.UserId == userId && b.Status == "Confirmed");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Profile.css" />
+}
+
+<!-- BANNER -->
+<div class="banner">
+    <div class="banner-text">
+        <h1>My Profile</h1>
+        <p>Manage your account and travel preferences</p>
+    </div>
+    <img src="@(Model?.ProfileImageUrl ?? "https://ui-avatars.com/api/?name=T&background=2a8153&color=fff")"
+         class="profile"
+         style="cursor:default; border-radius:50%; width:50px; height:50px; object-fit:cover; border:2px solid white;" />
+</div>
+
+<div class="content-area">
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-header">
+        <div style="position:relative;">
+            <img src="@(Model?.ProfileImageUrl ?? "https://ui-avatars.com/api/?name=T&background=2a8153&color=fff&size=100")"
+                 class="profile-avatar" alt="avatar"
+                 style="border:4px solid #2a8153; box-shadow:0 4px 16px rgba(42,129,83,0.2);"
+                 onerror="this.src='https://ui-avatars.com/api/?name=T&background=2a8153&color=fff&size=100'" />
+        </div>
+        <div>
+            <h2 style="margin:0 0 4px; font-size:22px; font-weight:700;">@Model?.Name</h2>
+            <p style="margin:0 0 4px; color:#2a8153; font-size:14px; font-weight:600;">@Model?.Email</p>
+            <p style="margin:0; color:#888; font-size:12px;">
+                Member since @Model?.RegistrationDate.ToString("MMM yyyy") &nbsp;·&nbsp; @Model?.Role
+            </p>
+        </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="profile-stats-row">
+        <div class="profile-stat">
+            <span class="stat-num">@bookingCount</span>
+            <span class="stat-label">Bookings</span>
+        </div>
+        <div class="profile-stat">
+            <span class="stat-num">@confirmedCount</span>
+            <span class="stat-label">Confirmed</span>
+        </div>
+        <div class="profile-stat">
+            <span class="stat-num">@wishCount</span>
+            <span class="stat-label">Wishlist</span>
+        </div>
+        <div class="profile-stat">
+            <span class="stat-num">@reviewCount</span>
+            <span class="stat-label">Reviews</span>
+        </div>
+    </div>
+
+    <!-- INFO GRID -->
+    <div class="profile-grid">
+        <div class="profile-card">
+            <h3>Personal Information</h3>
+            <p><i class="fa-solid fa-user"></i> <strong>Name:</strong> @Model?.Name</p>
+            <p><i class="fa-solid fa-envelope"></i> <strong>Email:</strong> @Model?.Email</p>
+            <p><i class="fa-solid fa-phone"></i> <strong>Phone:</strong> @(Model?.Mobile ?? "Not provided")</p>
+            <p><i class="fa-solid fa-location-dot"></i> <strong>Address:</strong> @(Model?.Address ?? "Not provided")</p>
+        </div>
+        <div class="profile-card">
+            <h3>Travel Preferences</h3>
+            <p><i class="fa-solid fa-wallet"></i> <strong>Budget:</strong> @(Model?.Budget ?? "Not set")</p>
+            <p><i class="fa-solid fa-calendar-days"></i> <strong>Preferred Days:</strong> @(Model?.PreferredDays?.ToString() ?? "Not set")</p>
+            <p><i class="fa-solid fa-compass"></i> <strong>Travel Types:</strong> @(Model?.TravelTypes ?? "Not set")</p>
+        </div>
+    </div>
+
+    <button class="edit-btn" onclick="location.href='@Url.Action("EditProfile","Account")'">
+        <i class="fa-solid fa-pen-to-square"></i> Edit Profile
+    </button>
+</div>

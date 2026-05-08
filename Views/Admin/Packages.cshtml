@@ -1,0 +1,68 @@
+@using System.Security.Claims
+@inject TravelSphereMVC.Models.ApplicationDbContext DbContext
+@model IEnumerable<TravelSphereMVC.Models.Package>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Manage Packages";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var profileImg = DbContext.Users.Find(userId)?.ProfileImageUrl ?? "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AdminPackages.css" />
+}
+
+<!-- BANNER -->
+<div class="banner">
+    <div class="banner-text">
+        <h1>Manage Travel Packages</h1>
+        <p>View, add, edit, or remove travel packages and destinations</p>
+    </div>
+    <img src="@profileImg" class="profile" onclick="location.href='@Url.Action("Profile", "Admin")'" style="cursor: pointer; background: white; border-radius: 50%; width: 50px; height: 50px; object-fit: cover; border: none; padding: 2px;" />
+</div>
+
+<div class="content-area">
+    <div class="admin-header">
+        <h1>Manage Packages</h1>
+        <button class="add-btn" onclick="location.href='@Url.Action("AddPackage", "Admin")'">
+            Add New Package
+        </button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Package Name</th>
+                    <th>Location</th>
+                    <th>Duration</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var package in Model)
+                {
+                    <tr>
+                        <td>@package.Name</td>
+                        <td>@package.Location</td>
+                        <td>@package.Duration</td>
+                        <td>₹ @package.Price</td>
+                        <td>
+                            <button class="edit">Edit</button>
+                            <button class="delete">Delete</button>
+                        </td>
+                    </tr>
+                }
+                
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 20px;">No packages found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

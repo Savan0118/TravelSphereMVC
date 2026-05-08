@@ -1,0 +1,110 @@
+@model TravelSphereMVC.Models.User
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/EditProfile.css" />
+}
+
+<div class="banner">
+    <div class="banner-text">
+        <h1>Edit Profile</h1>
+        <p>Update your personal information and travel preferences</p>
+    </div>
+</div>
+
+<div class="content-area">
+    <div class="edit-card">
+        <form asp-action="EditProfile" asp-controller="Account" method="post">
+
+            <div class="edit-section">
+                <div class="edit-section-title">
+                    <i class="fa-solid fa-user"></i> Personal Information
+                </div>
+                <div class="edit-grid">
+                    <div class="edit-field">
+                        <label>Full Name</label>
+                        <input name="Name" value="@Model?.Name" placeholder="Your full name" />
+                    </div>
+                    <div class="edit-field">
+                        <label>Email</label>
+                        <input type="email" value="@Model?.Email" disabled
+                               style="opacity:0.5; cursor:not-allowed;"
+                               title="Email cannot be changed" />
+                    </div>
+                    <div class="edit-field">
+                        <label>Phone Number</label>
+                        <input name="Mobile" value="@Model?.Mobile" placeholder="+91 9000000000" />
+                    </div>
+                    <div class="edit-field edit-field-full">
+                        <label>Address</label>
+                        <textarea name="Address" rows="2" placeholder="Your home address">@Model?.Address</textarea>
+                    </div>
+                    <div class="edit-field edit-field-full">
+                        <label>Profile Image URL</label>
+                        <input name="ProfileImageUrl" value="@Model?.ProfileImageUrl"
+                               placeholder="https://..." id="imgUrlInput" oninput="previewAvatar(this.value)" />
+                    </div>
+                    <div class="edit-field" style="align-items:center; gap:12px;">
+                        <label>Preview</label>
+                        <img id="avatarPreview"
+                             src="@(Model?.ProfileImageUrl ?? "https://ui-avatars.com/api/?name=T&background=2a8153&color=fff&size=80")"
+                             style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:3px solid #2a8153;"
+                             onerror="this.src='https://ui-avatars.com/api/?name=T&background=2a8153&color=fff&size=80'" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="edit-section" style="margin-top:24px;">
+                <div class="edit-section-title">
+                    <i class="fa-solid fa-compass"></i> Travel Preferences
+                </div>
+                <div class="edit-grid">
+                    <div class="edit-field">
+                        <label>Budget Range</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="Budget" value="Low"    @(Model?.Budget=="Low"    ? "checked" : "") /> Low
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="Budget" value="Medium" @(Model?.Budget=="Medium" ? "checked" : "") /> Medium
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="Budget" value="High"   @(Model?.Budget=="High"   ? "checked" : "") /> High
+                            </label>
+                        </div>
+                    </div>
+                    <div class="edit-field">
+                        <label>Preferred Trip Duration (days)</label>
+                        <input name="PreferredDays" type="number" value="@Model?.PreferredDays" placeholder="e.g. 7" min="1" max="60" />
+                    </div>
+                    <div class="edit-field edit-field-full">
+                        <label>Travel Types (comma-separated)</label>
+                        <input name="TravelTypes" value="@Model?.TravelTypes"
+                               placeholder="e.g. Adventure, Beach, Heritage, Wildlife" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="edit-actions">
+                <button type="submit" class="save-btn">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Changes
+                </button>
+                <button type="button" class="cancel-edit-btn"
+                        onclick="location.href='@Url.Action("Profile","Account")'">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    function previewAvatar(url) {
+        const img = document.getElementById('avatarPreview');
+        if (url.trim()) img.src = url.trim();
+    }
+</script>
+}

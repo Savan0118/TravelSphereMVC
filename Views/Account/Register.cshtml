@@ -1,0 +1,88 @@
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Register";
+}
+@model TravelSphereMVC.Models.User
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Register.css" />
+}
+
+<div class="register-container">
+    <div class="register-box">
+        <h2 class="title">Welcome to TravelSphere</h2>
+        
+        @if (ViewBag.Error != null)
+        {
+            <div style="color: red; text-align: center; margin-bottom: 10px;">@ViewBag.Error</div>
+        }
+
+        <form asp-action="Register" method="post" id="registerForm">
+            <div class="segmented-container">
+                <label class="segmented-label">Register As :</label>
+                <div class="segmented-control">
+                    <input type="hidden" name="Role" id="roleInput" value="Traveller" />
+                    <button type="button" class="segment" onclick="setRole('Admin', this)">Admin</button>
+                    <button type="button" class="segment active" onclick="setRole('Traveller', this)">Traveller</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Name:</label>
+                <input type="text" asp-for="Name" placeholder="Enter your full name" />
+                <span asp-validation-for="Name" style="color:red; font-size:0.9em;"></span>
+            </div>
+
+            <div class="input-group">
+                <label>Mobile No:</label>
+                <input type="text" asp-for="Mobile" placeholder="Enter your mobile number" />
+                <span asp-validation-for="Mobile" style="color:red; font-size:0.9em;"></span>
+            </div>
+
+            <div class="input-group">
+                <label>Email:</label>
+                <input type="email" asp-for="Email" placeholder="Enter your email address" />
+                <span asp-validation-for="Email" style="color:red; font-size:0.9em;"></span>
+            </div>
+
+            <div class="input-group">
+                <label>Password:</label>
+                <input type="password" asp-for="PasswordHash" placeholder="Enter your password" />
+                <span asp-validation-for="PasswordHash" style="color:red; font-size:0.9em;"></span>
+            </div>
+
+            <div class="input-group">
+                <label>Confirm Password:</label>
+                <input type="password" name="ConfirmPassword" placeholder="Re-enter your password" />
+            </div>
+
+            <button type="submit" class="register-btn">Register</button>
+        </form>
+
+        <div class="login-link" style="margin-top: 20px;">
+            Already have an account ?
+            <span onclick="location.href='@Url.Action("Login", "Account")'" style="cursor:pointer; text-decoration: underline;">Sign In</span>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function setRole(role, btn) {
+            document.getElementById('roleInput').value = role;
+            document.querySelectorAll('.segment').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        // basic front-end check for confirm password before submit
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            var pwd = document.querySelector('input[name="PasswordHash"]').value;
+            var cpwd = document.querySelector('input[name="ConfirmPassword"]').value;
+            if (pwd !== cpwd) {
+                e.preventDefault();
+                alert('Passwords do not match');
+            }
+        });
+    </script>
+}

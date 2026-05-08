@@ -1,0 +1,146 @@
+@model IEnumerable<TravelSphereMVC.Models.Package>
+@using System.Security.Claims
+@inject TravelSphereMVC.Models.ApplicationDbContext DbContext
+@{
+    ViewData["Title"] = "Explore Packages";
+    var userId      = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+    var profileImg  = DbContext.Users.Find(userId)?.ProfileImageUrl ?? "https://ui-avatars.com/api/?name=T&background=2a8153&color=fff";
+    var wishlistIds = string.IsNullOrEmpty(userId) ? new HashSet<string>()
+        : DbContext.WishlistItems.Where(w => w.UserId == userId).Select(w => w.PackageId).ToHashSet();
+    var currentType  = ViewBag.CurrentType  as string ?? "";
+    var currentSort  = ViewBag.CurrentSort  as string ?? "";
+    var currentQuery = ViewBag.CurrentQuery as string ?? "";
+    var currentUrl   = Context.Request.Path + Context.Request.QueryString;
+    var categories   = new[] { "Beach", "Mountain", "Heritage", "Adventure", "Wildlife", "City", "Pilgrimage", "Desert" };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Search.css" />
+}
+
+<!-- BANNER -->
+<div class="banner">
+    <div class="banner-text">
+        <h1>Discover Exceptional Destinations</h1>
+        <p>Filter, compare and find your perfect travel package</p>
+    </div>
+    <img src="@profileImg" class="profile"
+         onclick="location.href='@Url.Action("Profile", "Account")'"
+         style="cursor:pointer; border-radius:50%; width:50px; height:50px; object-fit:cover; border:2px solid white;" />
+    <div class="search-bar-pill">
+        <form asp-action="Packages" method="get" style="display:flex; align-items:center; width:100%;">
+            <input type="hidden" name="type" value="@currentType" />
+            <div class="search-pill-item">
+                <input type="text" name="query" placeholder="Search destination…" value="@currentQuery"
+                       style="border:none; background:transparent; outline:none; font-weight:600; color:#1a1a1a; font-size:13px; width:180px;" />
+            </div>
+            <div class="pill-divider"></div>
+            <div class="search-pill-item">
+                <select name="sort" style="border:none; background:transparent; outline:none; font-weight:600; color:#1a1a1a; font-size:13px; cursor:pointer;">
+                    <option value="">Sort By</option>
+                    @if (currentSort == "price_asc") { <option value="price_asc" selected>Price Low → High</option> } else { <option value="price_asc">Price Low → High</option> }
+                    @if (currentSort == "price_desc") { <option value="price_desc" selected>Price High → Low</option> } else { <option value="price_desc">Price High → Low</option> }
+                    @if (currentSort == "name") { <option value="name" selected>Name A–Z</option> } else { <option value="name">Name A–Z</option> }
+                </select>
+            </div>
+            <button type="submit" class="search-pill-btn">Search</button>
+        </form>
+    </div>
+</div>
+
+<div class="content-area" style="padding-top:38px;">
+
+    <!-- CATEGORY CHIPS -->
+    <div class="category-chips">
+        <a href="@Url.Action("Packages","Home",new{query=currentQuery,sort=currentSort})"
+           class="chip @(string.IsNullOrEmpty(currentType)?"chip-active":"")">🌍 All</a>
+        @foreach (var cat in categories)
+        {
+            var icon = cat switch { "Beach"=>"🏖️","Mountain"=>"⛰️","Heritage"=>"🏛️","Adventure"=>"🧗",
+                                    "Wildlife"=>"🦁","City"=>"🏙️","Pilgrimage"=>"🕌","Desert"=>"🏜️",_=>"🌍" };
+            <a href="@Url.Action("Packages","Home",new{type=cat,query=currentQuery,sort=currentSort})"
+               class="chip @(currentType==cat?"chip-active":"")">@icon @cat</a>
+        }
+    </div>
+
+    <p class="results-count">@Model.Count() package@(Model.Count()!=1?"s":"") found
+        @if(!string.IsNullOrEmpty(currentType)){<text> in <strong>@currentType</strong></text>}
+    </p>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-explore">
+            <i class="fa-solid fa-compass" style="font-size:48px;color:#ddd;display:block;margin-bottom:12px;"></i>
+            <h3>No packages found</h3>
+            <p>Try a different filter or clear your search</p>
+            <a href="@Url.Action("Packages","Home")" class="clear-btn">Clear Filters</a>
+        </div>
+    }
+    else
+    {
+        <div class="pkg-grid">
+            @foreach (var pkg in Model)
+            {
+                var inWl = wishlistIds.Contains(pkg.Id);
+                var rvws = DbContext.Reviews.Where(r => r.PackageId == pkg.Id);
+                var avgR = rvws.Any() ? rvws.Average(r => r.Rating) : 0.0;
+                var rvwCount = rvws.Count();
+                decimal effPrice = pkg.DiscountPercentage > 0
+                    ? pkg.Price - (pkg.Price * (pkg.DiscountPercentage ?? 0) / 100) : pkg.Price;
+
+                <div class="pkg-card">
+                    <div class="pkg-img-wrap">
+                        <img src="@(pkg.ImageUrl ?? "/Images/placeholder.png")" alt="@pkg.Name"
+                             onerror="this.src='https://placehold.co/400x240/2a8153/white?text=Travel'" />
+                        <div class="pkg-img-overlay"></div>
+                        @if (!string.IsNullOrEmpty(pkg.DestinationType))
+                        {
+                            <span class="pkg-type-badge">@pkg.DestinationType</span>
+                        }
+                        <form asp-controller="Wishlist" asp-action="@(inWl?"Remove":"Add")" method="post"
+                              style="position:absolute;top:10px;right:10px;margin:0;">
+                            <input type="hidden" name="packageId" value="@pkg.Id" />
+                            <input type="hidden" name="returnUrl" value="@currentUrl" />
+                            <button type="submit" class="pkg-heart">@(inWl?"❤️":"🤍")</button>
+                        </form>
+                    </div>
+                    <div class="pkg-body">
+                        <h3 class="pkg-name">@pkg.Name</h3>
+                        <p class="pkg-location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            @pkg.Location@(pkg.Country!=null?$", {pkg.Country}":"")
+                        </p>
+                        @if (avgR > 0)
+                        {
+                            <div class="pkg-rating">
+                                <span class="stars">@string.Concat(Enumerable.Range(1,5).Select(i=>i<=(int)Math.Round(avgR)?"★":"☆"))</span>
+                                <span class="rating-val">@avgR.ToString("F1")</span>
+                                <span class="review-count">(@rvwCount review@(rvwCount!=1?"s":""))</span>
+                            </div>
+                        }
+                        <p class="pkg-desc">@(pkg.ShortDescription ?? pkg.ActivitiesList ?? "")</p>
+                        <div class="pkg-tags">
+                            <span class="pkg-tag"><i class="fa-regular fa-clock"></i> @pkg.Duration</span>
+                            @if (!string.IsNullOrEmpty(pkg.TravelType)) { <span class="pkg-tag">👥 @pkg.TravelType</span> }
+                            @if (!string.IsNullOrEmpty(pkg.DifficultyLevel)) { <span class="pkg-tag">🏔️ @pkg.DifficultyLevel</span> }
+                        </div>
+                        <div class="pkg-footer">
+                            <div class="pkg-price-block">
+                                @if (pkg.DiscountPercentage > 0)
+                                {
+                                    <span class="pkg-original">₹@pkg.Price.ToString("N0")</span>
+                                    <span class="pkg-discount-badge">@pkg.DiscountPercentage% OFF</span>
+                                }
+                                <span class="pkg-price">₹@effPrice.ToString("N0")<small>/person</small></span>
+                            </div>
+                            <button class="pkg-view-btn"
+                                    onclick="location.href='@Url.Action("Description","Home",new{id=pkg.Id})'">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

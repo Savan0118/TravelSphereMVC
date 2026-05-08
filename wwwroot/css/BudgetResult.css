@@ -1,0 +1,176 @@
+/* BANNER */
+.budget-banner {
+  background-image: url("/Images/Home_Img.png");
+  background-size: cover;
+  background-position: center;
+}
+
+/* MAIN CONTAINER */
+.result-container {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+/* TOP SECTION */
+.top-section {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+/* GLASS */
+.glass {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* CHART */
+.chart-card {
+  width: 400px;
+  text-align: center;
+}
+
+.chart-wrapper {
+  position: relative;
+}
+
+.chart-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.chart-center span {
+  display: block;
+  font-size: 12px;
+  color: gray;
+}
+
+/* SUMMARY */
+.summary-card {
+  flex: 1;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.summary-row.total {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.summary-row.buffer {
+  color: #888;
+}
+
+/* EXPENSE SECTION */
+.expense-section {
+  margin-top: 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-btn {
+  background: #2a8153;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* EXPENSE CARD */
+.expense-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding: 15px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 12px;
+}
+
+.expense-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.expense-left h4 {
+  margin: 0;
+}
+
+.expense-left p {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+}
+
+.expense-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 600;
+}
+
+.actions {
+  cursor: pointer;
+}
+
+/* BOTTOM BAR */
+.bottom-bar {
+  position: sticky;
+  bottom: 0;
+  margin: 20px;
+  padding: 15px 25px;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.trip-info {
+  font-size: 14px;
+}
+
+.final-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg,#2a8153,#1a4f36);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+}

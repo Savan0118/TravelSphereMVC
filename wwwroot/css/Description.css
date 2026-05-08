@@ -1,0 +1,201 @@
+/* ── EXISTING STYLES (preserved) ────────────────────────────────── */
+.description-layout { display:flex; gap:30px; }
+.description-left   { flex:2; }
+.description-right  { flex:1; display:flex; flex-direction:column; gap:20px; }
+
+.glass {
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.07);
+    transition: all 0.3s ease;
+}
+
+.glass:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.10);
+}
+
+.description-box    { padding:28px; border-radius:20px; line-height:1.9; }
+.description-box p  { color:#2f2f2f; font-size:15px; margin-bottom:8px; }
+.description-box span { font-weight:600; color:#1f6a45; }
+.info-card          { padding:24px; border-radius:18px; line-height:2; font-size:14px; }
+.itinerary-card     { padding:22px; border-radius:18px; }
+
+.book-btn {
+    display: block; width: 100%;
+    background: linear-gradient(135deg,#2f8f5b,#1d5c3d);
+    color: white; border: none; padding: 14px;
+    border-radius: 14px; font-size: 15px; cursor: pointer;
+    transition: 0.3s; font-weight: 700; letter-spacing: 0.3px;
+    box-shadow: 0 8px 22px rgba(42,129,83,0.28);
+}
+
+.book-btn:hover { transform:translateY(-2px); box-shadow:0 12px 26px rgba(0,0,0,0.18); }
+
+.highlight {
+    font-weight: 700; font-size: 18px; margin-top:10px; margin-bottom:14px;
+    position: relative; display: inline-block; color: #111;
+}
+
+.highlight::after {
+    content: ""; position: absolute; left: 0; bottom: -4px;
+    width: 55%; height: 3px;
+    background: linear-gradient(to right,#2a8153,#67d8a4);
+    border-radius: 5px;
+}
+
+.center { text-align:center; display:block; }
+
+.description-banner {
+    position: relative; overflow: hidden; border-radius: 20px;
+}
+
+.banner-overlay {
+    position: absolute; top:0; left:0; width:100%; height:100%;
+    background: linear-gradient(to right,rgba(0,0,0,0.45),rgba(0,0,0,0.15),transparent);
+    border-radius: 20px;
+}
+
+.banner-badges { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+
+.banner-badges span {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.32);
+    padding: 4px 12px; border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+    backdrop-filter: blur(6px);
+}
+
+.inclusion-list { padding-left:0; list-style:none; margin-top:8px; }
+.inclusion-list li { margin-bottom:8px; color:#2f2f2f; font-size:14px; }
+
+.text { opacity:.9; line-height:1.8; }
+
+/* ── DETAIL GRID ─────────────────────────────────────────────────── */
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 12px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #f9faf9;
+    padding: 12px 14px;
+    border-radius: 12px;
+}
+
+.detail-item i {
+    color: #2a8153;
+    font-size: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.detail-item span { font-size: 13px; color: #444; line-height: 1.5; }
+.detail-item strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 2px; }
+
+/* ── ACTIVITY TAGS ───────────────────────────────────────────────── */
+.activity-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+.activity-tag {
+    background: #e8f5e9; color: #1b5e20;
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+}
+
+/* ── GALLERY ─────────────────────────────────────────────────────── */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.gallery-item {
+    border-radius: 12px;
+    overflow: hidden;
+    height: 120px;
+}
+
+.gallery-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+}
+
+.gallery-item:hover img { transform: scale(1.08); }
+
+/* ── ITINERARY TIMELINE ──────────────────────────────────────────── */
+.itinerary-timeline { margin-top: 12px; }
+
+.itinerary-day {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+}
+
+.day-dot {
+    min-width: 30px; height: 30px;
+    background: linear-gradient(135deg, #2a8153, #1a4f36);
+    color: white; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+}
+
+.itinerary-day p { margin: 4px 0 0; font-size: 14px; color: #444; line-height: 1.6; }
+
+/* ── REVIEWS ─────────────────────────────────────────────────────── */
+.review-alert {
+    padding: 10px 16px; border-radius: 10px;
+    font-size: 13px; font-weight: 600; margin-bottom: 14px;
+}
+
+.review-alert.success { background: #e8f5e9; color: #1b5e20; border-left: 4px solid #2a8153; }
+.review-alert.error   { background: #fce4ec; color: #b71c1c; border-left: 4px solid #e74c3c; }
+
+.review-form-box {
+    background: #f9faf9; padding: 20px; border-radius: 14px;
+    margin-bottom: 20px; border: 1.5px solid #e8e8e8;
+}
+
+.star-select { display: flex; gap: 6px; cursor: pointer; }
+
+.star-opt {
+    font-size: 26px; color: #ccc;
+    transition: color 0.15s, transform 0.15s;
+    cursor: pointer;
+}
+
+.star-opt:hover { transform: scale(1.15); }
+
+.review-card {
+    background: white; border-radius: 14px; padding: 16px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    margin-bottom: 14px;
+    border-left: 3px solid #2a8153;
+}
+
+.review-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+}
+
+.review-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: linear-gradient(135deg, #2a8153, #1a4f36);
+    color: white; display: flex; align-items: center;
+    justify-content: center; font-weight: 700; font-size: 14px;
+    flex-shrink: 0;
+}
+
+.review-author { font-weight: 700; font-size: 14px; color: #1a1a1a; }
+.review-date   { font-size: 11px; color: #aaa; }
+.review-stars  { margin-left: auto; color: #f39c12; font-size: 16px; letter-spacing: 1px; }
+.review-comment{ font-size: 13px; color: #555; line-height: 1.7; margin: 0; }
